@@ -22,8 +22,8 @@ def taskList(request):
 
 @api_view(['GET'])
 def taskDetail(request, pk): #displaying a single task
-    tasks = Task.objects.get(id=pk)
-    serializer =  TaskSerializer(tasks, many=False) # return one object
+    task = Task.objects.get(id=pk)
+    serializer =  TaskSerializer(task, many=False) # return one object
     return Response(serializer.data)   
     
 
@@ -36,7 +36,9 @@ def taskCreate(request): #displaying a single task
     
 
 @api_view(['POST'])
-def taskUpdate(request): #displaying a single task
-    tasks = Task.objects.get(id=pk)
-    serializer =  TaskSerializer(tasks, many=False) # return one object
+def taskUpdate(request, pk): #displaying a single task
+    task = Task.objects.get(id=pk)
+    serializer =  TaskSerializer(instance=task, data=request.data) # update particular object and post data
+    if serializer.is_valid():
+        serializer.save()
     return Response(serializer.data)   
