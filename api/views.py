@@ -9,13 +9,17 @@ from .models import Task
 @api_view(['GET'])  
 def apiOverview(request):
     api_urls = {
-        'List':"hello"
+        'List':'/task-list/',
+		'Detail View':'/task-detail/<str:pk>/',
+		'Create':'/task-create/',
+		'Update':'/task-update/<str:pk>/',
+		'Delete':'/task-delete/<str:pk>/',  
     }
     return Response(api_urls)
 
 @api_view(['GET'])
 def taskList(request):
-    tasks = Task.objects.all()
+    tasks = Task.objects.all().order_by('-id')
     serializer =  TaskSerializer(tasks, many=True)
     return Response(serializer.data)   
 
@@ -44,7 +48,7 @@ def taskUpdate(request, pk): #displaying a single task
     return Response(serializer.data)   
 
 @api_view(['DELETE'])
-def taskDelete(request, pk): #displaying a single task
+def taskDelete(request, pk): 
     task = Task.objects.get(id=pk)
     task.delete()
     return Response("Item successfully deleted")   
