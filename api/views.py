@@ -42,3 +42,9 @@ def taskUpdate(request, pk): #displaying a single task
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data)   
+
+@api_view(['DELETE'])
+def taskDelete(request, pk): #displaying a single task
+    task = Task.objects.get(id=pk)
+    task.delete()
+    return Response("Item successfully deleted")   
